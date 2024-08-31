@@ -11,16 +11,6 @@ class Authorization(Actions):
         super().__init__(driver, wait)
 
     def login_by_number(self, number, country):
-
-        if len(number) > 9:
-            number = number[-9:]
-        elif len(number) != 9:
-            print('Номер містить менше 9 цифр!\n')
-        
-        if not number.isdigit():
-            print('Номер має містити тільки цифри\n')
-            return False
-
         local_storage_data = SaveAuthorization(self._driver)
 
         if local_storage_data._load_local_storage(number):
@@ -31,7 +21,6 @@ class Authorization(Actions):
             self._driver.refresh()
             print('Авторизація пройшла успішно!')
         else:
-            input()
             self._sleep_time()
             self._click_element('//*[@id="auth-qr-form"]/div/button')
 

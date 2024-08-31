@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from modules import Authorization
 from modules import UsersHandler
+from modules import NumberHandler
 
 from fake_useragent import UserAgent
 
@@ -12,11 +13,14 @@ import time
 
 
 def main():
+    number = NumberHandler()
+    number = number.choose_number()
+
     options = Options()
     options.add_argument(f'user-agent={UserAgent().random}')
     options.add_argument('--disable-blink-features=AutomationControlled')
     options.add_argument("--log-level=3")
-    options.add_argument("--headless")  # Запуск без графічного інтерфейсу
+    options.add_argument("--headless")
     options.add_argument("--disable-gpu")
     
     driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
@@ -24,7 +28,6 @@ def main():
 
     wait = WebDriverWait(driver, 10)
 
-    number = str(input('Введіть номер телефону: '))
 
     Authorization(driver, wait).login_by_number(number, 'Ukraine')
     time.sleep(3)
